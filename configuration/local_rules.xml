@@ -1,0 +1,41 @@
+<!-- Local rules -->
+
+<!-- Modify it at your will. -->
+<!-- Copyright (C) 2015, Wazuh Inc. -->
+
+<!-- Example -->
+<group name="local,syslog,sshd,">
+
+  <!--
+  Dec 10 01:02:02 host sshd[1234]: Failed none for root from 1.1.1.1 port 1066 ssh2
+  -->
+  <rule id="100001" level="5">
+    <if_sid>5716</if_sid>
+    <srcip>1.1.1.1</srcip>
+    <description>sshd: authentication failed from IP 1.1.1.1.</description>
+    <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,</group>
+  </rule>
+
+</group>
+
+<group name="audit, custom_kali_rules,">
+
+  <rule id="100050" level="12">
+    <if_group>audit_command</if_group>
+    <match>nmap</match>
+    <description>CRITICAL: Network Scanning Tool (Nmap) Execution Detected!</description>
+    <mitre>
+      <id>T1046</id>
+    </mitre>
+  </rule>
+
+  <rule id="100051" level="12">
+    <if_group>audit_command</if_group>
+    <match>shadow|passwd</match>
+    <description>CRITICAL: Suspicious Access to Credentials File (/etc/shadow or /etc/passwd)</description>
+    <mitre>
+      <id>T1003.008</id>
+    </mitre>
+  </rule>
+
+</group>
